@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Luke Skywalker",
+    "frequency": "Once a week",
+    "last_met": "2 days ago"
+
+  },
+  {
+    "name": "Darth Vader",
+    "frequency": "Once a month",
+    "last_met": "3 months ago"
+  },
+  {
+    "name": "Leia Organa",
+    "frequency": "Twice a week",
+    "last_met": "1 month ago"
+
+  },
+  {
+    "name": "Owen Lars",
+    "frequency": "Once a month",
+    "last_met": "5 months ago"
+
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "name": "Luke Skywalker",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "James Smith",
+    "number": "123-456-7890",
+    "relationship": "school"
+  },
+  {
+    "name": "Darth Vader",
+    "number": "123-456-7890",
+    "relationship": "school"
+  },
+  {
+    "name": "Leia Organa",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Owen Lars",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Leia Organa",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "David Smith",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Maria Rodriguez",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Chris Brown",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Jenna Taylor",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Johny Anderson",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Mike Harris",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Chris Martin",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Kerry Lee",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Jill Young",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Perry Lopez",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Christina Adams",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Hanna Baker",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  },
+  {
+    "name": "Ann Carter",
+    "number": "123-456-7890",
+    "relationship": "school"
+
+  }
+]
