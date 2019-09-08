@@ -5,6 +5,7 @@ import logging
 
 logging.getLogger().setLevel(logging.INFO)
 
+
 class InTouchClient:
 
     def __init__(self, env=None):
@@ -28,5 +29,30 @@ class InTouchClient:
 
     def new_user(self, id, name):
         logging.info("[new_user] id=%s, name=%s" % (id, name))
-        data = dict(id=id, name=name)
+        data = {'id': id,
+                'name': name}
         self.post(common.PATHS.NEW_USER, data)
+
+    def new_connection(self, id, connection_name, frequency, how_you_met, their_challenges, other_notes):
+        logging.info('[new_connection] id=%s, connection_name=%s, frequency=%s, how_you_met=%s, their_challenges=%s, other_notes=%s' % (
+            id, connection_name, frequency, how_you_met, their_challenges, other_notes))
+        data = {'id': id,
+                'connection_name': connection_name,
+                'frequency': frequency,
+                'how_you_met': how_you_met,
+                'their_challenges': their_challenges,
+                'other_notes': other_notes}
+        self.post(common.PATHS.NEW_CONNECTION, data)
+
+    def update_connection(self, id, connection_name, frequency=None, how_you_met=None, their_challenges=None, other_notes=None):
+        logging.info(
+            '[new_connection] id=%s, connection_name=%s, frequency=%s, how_you_met=%s, their_challenges=%s, other_notes=%s' % (
+                id, connection_name, frequency, how_you_met, their_challenges, other_notes))
+        data = {'id': id,
+                'connection_name': connection_name,
+                'frequency': frequency,
+                'how_you_met': how_you_met,
+                'their_challenges': their_challenges,
+                'other_notes': other_notes}
+        data = {k: v for k, v in data.items() if v is not None}
+        self.post(common.PATHS.EDIT_CONNECTION, data)
