@@ -28,9 +28,12 @@ class InTouchClient:
             raise ClientRequestException("HTTP {}: {}".format(resp.status_code, resp.reason))
         return resp
 
-    def new_user(self, id, name):
-        logging.info("[new_user] id=%s, name=%s" % (id, name))
+    def new_user(self, id, auth_code, phone_number, name):
+        logging.info(
+            "[new_user] id=%s, auth_code=%s, phone_number=%s, name=%s" % (id, auth_code, phone_number, name))
         data = {'id': id,
+                'auth_code': auth_code,
+                'phone_number': phone_number,
                 'name': name}
         self.post(common.PATHS.NEW_USER, data)
 

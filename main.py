@@ -5,8 +5,9 @@ import common
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-import google
 import logging
+from linkedin import LinkedIn
+import twilio_client
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -16,7 +17,7 @@ app = Flask(__name__)
 
 if __name__ == '__main__':
     # This is used when running locally only.
-    cred = credentials.Certificate('intouch-6a524-8ba1874aba3b.json')
+    cred = credentials.Certificate('intouch-6a524-e13e8300153d.json')
     firebase_admin.initialize_app(cred)
 else:
     cred = credentials.ApplicationDefault()
@@ -68,14 +69,22 @@ def new_user():
     content = request.json
     logging.info("[new_user] got request with content %s" % str(content))
     id = content.get('id', '')
+    auth_code = content.get('auth_code', '')
     name = content.get('name', '')
-    if not all([id, name]):
-        logging.info("[new_user] missing name, or id")
-        return error_code(400, "Must pass id, and name")
+    phone_number = content.get('phone_number', '')
+    if not all([id, auth_code, name, phone_number]):
+        logging.info("[new_user] missing name, auth_code, id, or phone_number")
+        return error_code(400, "Must passed id, name, auth_code, phone_number")
+    li = LinkedIn()
+    access_token = "foo"  # li.getAccessToken(auth_code)
     db = get_database()
     doc_ref = db.collection(id).document("metadata")
-    data = {'name': name}
-    return new_doc(doc_ref, data)
+    data = {'name': name, 'access_token': access_token, 'phone_number': phone_number}
+    resp = new_doc(doc_ref, data)
+    if resp.status_code == 200:
+        doc_ref = db.collection("collections").document("metadata")
+        doc_ref.update({'names': firestore.ArrayUnion([id])})
+    return resp
 
 
 def modify_connection(content, new=False, edit=False):
@@ -136,6 +145,18 @@ def get_connection():
     return make_response(resp_conts, 200)
 
 
+def _get_connections(db, collection):
+    docs = []
+    for doc in db.collection(collection).stream():
+        doc_dict = doc.to_dict()
+        if doc_dict.get('time_since_last_contact'):
+            doc_dict["connection_name"] = doc.id
+            docs.append(doc_dict)
+    sorted(docs, key=lambda i: (i['time_since_last_contact'], i['connection_name']))
+    ordered_docs = dict(zip(list(range(len(docs))), docs))
+    return ordered_docs
+
+
 @app.route(common.PATHS.GET_CONNECTIONS, methods=["POST"])
 def get_connections():
     content = request.json
@@ -143,15 +164,49 @@ def get_connections():
     if not id:
         return error_code(400, "Must pass id")
     db = get_database()
-    docs = []
-    for doc in db.collection(id).stream():
-        doc_dict = doc.to_dict()
-        if doc_dict.get('time_since_last_contact'):
-            doc_dict["connection_name"] = doc.id
-            docs.append(doc_dict)
-    sorted(docs, key=lambda i: (i['time_since_last_contact'], i['connection_name']))
-    ordered_docs = dict(zip(list(range(len(docs))), docs))
-    return make_response(ordered_docs, 200)
+    docs = _get_connections(db, db.collection(id))
+    return make_response(docs, 200)
+
+
+def get_collections():
+    db = get_database()
+    names = db.collection("collections").document("metadata").get().to_dict().get('names', [])
+    collections = []
+    for name in names:
+        collections.append(db.collection(name))
+    return names
+
+
+@app.route("/demo/notify", methods=["GET"])
+def demo_notify():
+    notify_to_contact_network()
+
+
+def notify_to_contact_network():
+    collections = get_collections()
+    for collection in collections:
+        db = get_database()
+        connections = _get_connections(db, collection)
+        time_to_speak = []
+        past_deadline = []
+        for connection in connections.values():
+            if int(connection["time_since_last_contact"]) == 0:
+                time_to_speak.append(connection)
+            if int(connection["time_since_last_contact"]) < 0:
+                past_deadline.append(connection)
+        if time_to_speak or past_deadline:
+            message = ["It's time to network!\n"]
+            if time_to_speak:
+                message.append("Today you should try and get in touch with: \n")
+                for connection in time_to_speak:
+                    message.append(connection["connection_name"] + "\n")
+            if past_deadline:
+                message.append("You're passed the deadline you set for speaking to: \n")
+                for connection in past_deadline:
+                    message.append(connection["connection_name"] + "\n")
+            phone_number = db.collection(collection).document('metadata').get().get("phone_number")
+            message = "".join(message)
+            twilio_client.TwilioClient().send_text(phone_number, message)
 
 
 if __name__ == '__main__':
