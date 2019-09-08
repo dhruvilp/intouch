@@ -743,4 +743,7 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+# APIKey
+intouch-6a524-8ba1874aba3b.json
+
 # End of https://www.gitignore.io/api/python,android,pycharm,visualstudio,androidstudio
