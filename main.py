@@ -69,9 +69,9 @@ def new_user():
     logging.info("[new_user] got request with content %s" % str(content))
     id = content.get('id', '')
     name = content.get('name', '')
-    if not id or not name:
-        logging.info("[new_user] missing name or id")
-        return error_code(400, "Must pass id and name")
+    if not all([id, name]):
+        logging.info("[new_user] missing name, or id")
+        return error_code(400, "Must pass id, and name")
     db = get_database()
     doc_ref = db.collection(id).document("metadata")
     data = {'name': name}
@@ -98,6 +98,7 @@ def modify_connection(content, new=False, edit=False):
             'their_challenges': their_challenges,
             'other_notes': other_notes}
     if new:
+        data["time_since_last_contact"] = frequency
         return new_doc(doc_ref, data)
     if edit:
         data = {k: v for k, v in data.items() if v is not None}
@@ -116,6 +117,41 @@ def edit_connection():
     content = request.json
     logging.info("[edit_connection] got request with content %s" % str(content))
     return modify_connection(content, edit=True)
+
+
+@app.route(common.PATHS.GET_CONNECTION, methods=["POST"])
+def get_connection():
+    content = request.json
+    id = content.get('id', None)
+    connection_name = content.get('connection_name', None)
+    if not all([id, connection_name]):
+        return error_code(400, "Must pass id and connection_name")
+    db = get_database()
+    doc = db.collection(id).document(connection_name).get()
+    if not doc.exists:
+        return error_code(400, "Unknown id or connection_name")
+    resp_conts = doc.to_dict()
+    resp_conts["id"] = id
+    resp_conts["connection_name"] = connection_name
+    return make_response(resp_conts, 200)
+
+
+@app.route(common.PATHS.GET_CONNECTIONS, methods=["POST"])
+def get_connections():
+    content = request.json
+    id = content.get('id', None)
+    if not id:
+        return error_code(400, "Must pass id")
+    db = get_database()
+    docs = []
+    for doc in db.collection(id).stream():
+        doc_dict = doc.to_dict()
+        if doc_dict.get('time_since_last_contact'):
+            doc_dict["connection_name"] = doc.id
+            docs.append(doc_dict)
+    sorted(docs, key=lambda i: (i['time_since_last_contact'], i['connection_name']))
+    ordered_docs = dict(zip(list(range(len(docs))), docs))
+    return make_response(ordered_docs, 200)
 
 
 if __name__ == '__main__':
