@@ -1,4 +1,5 @@
-<img src="intouch_1.png" height="420em" />
+<img align="left" src="app_logo_large.png" height="200">
+<img align="right" src="intouch_1.png" height="420em" />
 
 ## Inspiration
 InTouch was inspired by our joint frustration at the current system of networking. Despite constant contact with new people, we and many others, find the majority of our connections to be unutilized and superficial. Since research has shown that the strength of acquaintances is what leads to career growth, current methods of networking may be ineffective. We hope to spur a paradigm shift, fostering mutually beneficial and genuine relationships out of our most distant ties.
