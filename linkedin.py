@@ -35,12 +35,3 @@ class LinkedIn:
         app = linkedin.LinkedInApplication(token=accessToken)
         return app.get_profile()
 
-
-l = LinkedIn()
-# get a new authorization code before running this
-accessToken = l.getAccessToken('AQR_6NYaGVqtX2oYPWT23MoqIm46v8CuG89IQgZk9VW-A3nJSI1lwk5tc0YIeDGo0HR_cyBQu23pSetiYRV1gUeKfOani0h6tKbxxe_RSVYcykKBqedWrWWvmM-PWeMtE9R9ziG_t8b9EIGWbw-i8nMAyeJjZbFBzdK0nOydENzbTILLegTwM_678dwaQg')
-# print(accessToken)
-print(l.getProfile(accessToken))
-
-# application.get_connections()
-
