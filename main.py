@@ -145,9 +145,9 @@ def get_connection():
     return make_response(resp_conts, 200)
 
 
-def _get_connections(db, collection):
+def _get_connections(db, id):
     docs = []
-    for doc in db.collection(collection).stream():
+    for doc in db.collection(id).stream():
         doc_dict = doc.to_dict()
         if doc_dict.get('time_since_last_contact'):
             doc_dict["connection_name"] = doc.id
@@ -164,7 +164,7 @@ def get_connections():
     if not id:
         return error_code(400, "Must pass id")
     db = get_database()
-    docs = _get_connections(db, db.collection(id))
+    docs = _get_connections(db, id)
     return make_response(docs, 200)
 
 
