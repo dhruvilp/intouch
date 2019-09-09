@@ -7,6 +7,11 @@
 ## Inspiration
 InTouch was inspired by our joint frustration at the current system of networking. Despite constant contact with new people, we and many others, find the majority of our connections to be unutilized and superficial. Since research has shown that the strength of acquaintances is what leads to career growth, current methods of networking may be ineffective. We hope to spur a paradigm shift, fostering mutually beneficial and genuine relationships out of our most distant ties.
 
+## Tech Dev Team
+* Dhruvil Patel (https://github.com/dhruvilp) -- FrontEnd + UI/UX dev
+* Jasmine Falk (https://github.com/jasminefalk) -- APIs dev
+* Kieran Litschel (https://github.com/KieranLitschel) -- BackEnd dev
+
 ## What it does
 Based on research from Harvard Business School, InTouch is a mobile platform that analyzes, personalizes, and nurtures real relationships from superficial connections. InTouch will focus on three approaches: a) contact prioritization, b) regular interaction, and c) substance of contact. Through personalized data analysis/optimization, the platform will remind the user to reach out on a pre-determined schedule. We envision InTouch as an extension to many social networking sites. For instance, InTouch could assist in cultivating genuine relationships from new, but distant Linkedin connections.
 
