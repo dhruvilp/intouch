@@ -39,7 +39,7 @@ python-linkedin-v2==0.9.4
 pytz==2019.2
 requests==2.22.0
 requests-oauthlib==1.2.0
-rsa==4.0
+rsa==4.7
 simplejson==3.16.0
 six==1.12.0
 twilio==6.30.0
